@@ -260,6 +260,9 @@ void InitializeAddressLibrary(const std::filesystem::path& root)
     if (!version)
         return;
 
+	//while (!IsDebuggerPresent())
+    //    Sleep(1000);
+
     s_pLibrary = new AddressLibrary(*version, root);
 }
 
