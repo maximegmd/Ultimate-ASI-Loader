@@ -1,6 +1,7 @@
 LIBRARY "UAL"
 EXPORTS
 IsUltimateASILoader = IsUltimateASILoader
+ResolveAddress = ResolveAddress
 GetOverloadedFilePath = GetOverloadedFilePath
 GetMemoryModule = GetMemoryModule
 CustomCreateFileA = CustomCreateFileA

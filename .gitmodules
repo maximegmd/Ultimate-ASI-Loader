@@ -8,3 +8,9 @@
 [submodule "external/minidx9"]
 	path = external/minidx9
 	url = https://github.com/hrydgard/minidx9
+[submodule "external/simdjson"]
+	path = external/simdjson
+	url = https://github.com/simdjson/simdjson.git
+[submodule "external/parallel-hashmap"]
+	path = external/parallel-hashmap
+	url = https://github.com/greg7mdp/parallel-hashmap.git

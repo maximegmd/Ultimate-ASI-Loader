@@ -8,6 +8,8 @@
 extern "C" Direct3D8* WINAPI Direct3DCreate8(UINT SDKVersion);
 #endif
 
+void InitializeAddressLibrary(const std::filesystem::path& root);
+
 bool WINAPI IsUltimateASILoader()
 {
     return true;
@@ -567,6 +569,8 @@ void LoadPlugins()
 
     auto szSelfPath = GetModuleFileNameW(hm).substr(0, GetModuleFileNameW(hm).find_last_of(L"/\\") + 1);
     SetCurrentDirectoryW(szSelfPath.c_str());
+
+    InitializeAddressLibrary(szSelfPath.c_str());
 
 #if !X64
     LoadLibraryW(L".\\modloader\\modupdater.asi");

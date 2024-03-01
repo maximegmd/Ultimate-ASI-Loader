@@ -210,13 +210,16 @@ project "Ultimate-ASI-Loader-x64"
    kind "SharedLib"
    language "C++"
    targetdir "bin/x64/%{cfg.buildcfg}"
-   targetname "dinput8"
+   targetname "version"
    targetextension ".dll"
    
    includedirs { "source" }
+   includedirs { "external/simdjson/singleheader" }
+   includedirs { "external/parallel-hashmap" }
    includedirs { "external" }
    
-   files { "source/dllmain.h", "source/dllmain.cpp" }
+   files { "source/dllmain.h", "source/dllmain.cpp", "source/resolve.cpp" }
+   files { "external/simdjson/singleheader/simdjson.h", "external/simdjson/singleheader/simdjson.cpp" }
    files { "source/x64.def" }
    files { "source/resources/Versioninfo.rc" }
    
