@@ -42,18 +42,18 @@ std::optional<uint64_t> GetGameVersion()
     auto size = GetFileVersionInfoSizeW(fileName.c_str(), nullptr);
     if (!size)
     {
-        throw std::runtime_error("Module has no size.");
+        return std::nullopt;
     }
 
     std::unique_ptr<uint8_t[]> data(new (std::nothrow) uint8_t[size]());
     if (!data)
     {
-        throw std::runtime_error("Cannot allocate memory.");
+        return std::nullopt;
     }
 
     if (!GetFileVersionInfo(fileName.c_str(), 0, size, data.get()))
     {
-        throw std::runtime_error("Module has no information.");
+        return std::nullopt;
     }
 
     struct LangAndCodePage
@@ -65,7 +65,7 @@ std::optional<uint64_t> GetGameVersion()
 
     if (!VerQueryValue(data.get(), L"\\VarFileInfo\\Translation", reinterpret_cast<void**>(&translations), &translationsBytes))
     {
-        throw std::runtime_error("Module has no translation information.");
+        return std::nullopt;
     }
 
     bool isGame = false;
@@ -93,7 +93,7 @@ std::optional<uint64_t> GetGameVersion()
 
         if (!VerQueryValue(data.get(), L"\\", reinterpret_cast<LPVOID*>(&fileInfo), &fileInfoBytes))
         {
-            throw std::runtime_error("Module has no information.");
+            return std::nullopt;
         }
 
         constexpr auto signature = 0xFEEF04BD;
@@ -254,16 +254,14 @@ std::vector<uint32_t> AddressLibrary::LoadSections()
 
 AddressLibrary* s_pLibrary;
 
-void InitializeAddressLibrary(const std::filesystem::path& root)
+bool InitializeAddressLibrary(const std::filesystem::path& root)
 {
     const auto version = GetGameVersion();
     if (!version)
-        return;
-
-	//while (!IsDebuggerPresent())
-    //    Sleep(1000);
+        return false;
 
     s_pLibrary = new AddressLibrary(*version, root);
+    return true;
 }
 
 extern "C" void* ResolveAddress(uint32_t aHash)
